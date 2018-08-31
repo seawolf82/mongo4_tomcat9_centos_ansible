@@ -1,0 +1,38 @@
+---
+
+- name: disable MongoDB service
+  systemd:
+    name: mongod
+    enabled: false
+
+- name: Make sure MongoDB service is stopped
+  systemd:
+    state: stopped
+    name: mongod
+
+
+
+- name: main | uninstall MongoDB packages
+  yum: >
+    pkg={{ item }}
+    state=absent
+  with_items:
+    - mongodb-org*
+
+- name: Remove MongoDB log files and directory
+  file:
+    path: /var/log/mongodb
+    state: absent
+
+
+- name: Remove MongoDB Database directory
+  file:
+    path: /var/lib/mongo
+    state: absent
+
+
+- name: removing firewall rules for 27017/tcp MongoDB
+  command: firewall-cmd --remove-port=27017/tcp --permanent
+  notify: Reloading firewalld rules
+
+

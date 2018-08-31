@@ -1,0 +1,12 @@
+
+- hosts: all
+  remote_user: root
+  roles:
+    - common
+
+- hosts: dev-servers
+  remote_user: root
+  roles:
+    - mongodb
+    - tomcat
+

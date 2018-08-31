@@ -1,0 +1,52 @@
+---
+
+- name: Copy mongodb repository into /etc/yum.repos.d
+  copy:
+    src: mongodb-org-4.0.repo
+    dest: /etc/yum.repos.d/mongodb-org-4.0.repo
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+
+
+- name: ensure a list of MongoDB packages installed
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - mongodb-org
+    - mongodb-org-server
+    - mongodb-org-mongos
+    - mongodb-org-shell
+    - mongodb-org-tools
+
+
+- name: enable MongoDB service
+  systemd:
+    name: mongod
+    enabled: yes
+
+
+- name: Make sure MongoDB service is running
+  systemd:
+    state: started
+    name: mongod
+
+
+- name: adding firewall rules for 27017/tcp MongoDB
+  command: firewall-cmd --add-port=27017/tcp --permanent
+  notify: Reloading firewalld rules
+
+- name: Copy mongod.conf in /etc
+  copy:
+    src: mongod.conf
+    dest: /etc/mongod.conf
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+
+- name: Restart MongoDB service
+  systemd:
+    state: restarted
+    name: mongod
+
