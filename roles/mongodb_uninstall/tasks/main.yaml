@@ -4,11 +4,13 @@
   systemd:
     name: mongod
     enabled: false
+  tags: mongodb  
 
 - name: Make sure MongoDB service is stopped
   systemd:
     state: stopped
     name: mongod
+  tags: mongodb  
 
 
 
@@ -18,21 +20,25 @@
     state=absent
   with_items:
     - mongodb-org*
+  tags: mongodb  
 
 - name: Remove MongoDB log files and directory
   file:
     path: /var/log/mongodb
     state: absent
+  tags: mongodb  
 
 
 - name: Remove MongoDB Database directory
   file:
     path: /var/lib/mongo
     state: absent
+  tags: mongodb  
 
 
 - name: removing firewall rules for 27017/tcp MongoDB
   command: firewall-cmd --remove-port=27017/tcp --permanent
   notify: Reloading firewalld rules
+  tags: mongodb  
 
 
