@@ -7,6 +7,7 @@
     owner: root
     group: root
     mode: u=rw,g=r,o=r
+  tags: mongodb
 
 
 - name: ensure a list of MongoDB packages installed
@@ -19,23 +20,27 @@
     - mongodb-org-mongos
     - mongodb-org-shell
     - mongodb-org-tools
+  tags: mongodb
 
 
 - name: enable MongoDB service
   systemd:
     name: mongod
     enabled: yes
+  tags: mongodb
 
 
 - name: Make sure MongoDB service is running
   systemd:
     state: started
     name: mongod
+  tags: mongodb
 
 
 - name: adding firewall rules for 27017/tcp MongoDB
   command: firewall-cmd --add-port=27017/tcp --permanent
   notify: Reloading firewalld rules
+  tags: mongodb
 
 - name: Copy mongod.conf in /etc
   copy:
@@ -44,9 +49,11 @@
     owner: root
     group: root
     mode: u=rw,g=r,o=r
+  tags: mongodb
 
 - name: Restart MongoDB service
   systemd:
     state: restarted
     name: mongod
+  tags: mongodb
 

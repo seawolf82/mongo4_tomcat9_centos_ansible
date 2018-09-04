@@ -18,3 +18,18 @@ ansible-playbook -i hosts site.yaml
 To uninstall mongo4_tomcat9_centos7 on centos7 run:
 
 ansible-playbook -i hosts deprovision.yaml
+
+Adding Tags to permit run only specific task of playbook
+
+Tags:
+
+upgrade
+package
+ntp
+mongodb
+tomcat
+
+
+For example, to launch only task regarding upgrade os, run:
+ 
+ansible-playbook -vv --tags "upgrade" -i hosts site.yaml
