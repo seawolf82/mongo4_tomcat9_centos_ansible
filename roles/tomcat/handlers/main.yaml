@@ -1,3 +1,6 @@
+---
 - name: restart tomcat
   service: name=tomcat state=restarted
 
+- name: Reloading firewalld rules
+  command: firewall-cmd --reload
