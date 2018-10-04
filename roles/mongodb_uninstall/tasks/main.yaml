@@ -36,6 +36,18 @@
   tags: mongodb  
 
 
+- name: Remove MongoDb repository
+  file:
+    path: /etc/yum.repos.d/mongodb-org-4.0.repo
+    state: absent
+  tags: mongodb
+
+- name: Refresh repository
+  command: yum makecache fast
+  tags: mongodb
+
+
+
 - name: removing firewall rules for 27017/tcp MongoDB
   command: firewall-cmd --remove-port=27017/tcp --permanent
   notify: Reloading firewalld rules
