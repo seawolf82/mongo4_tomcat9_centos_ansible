@@ -1,5 +1,6 @@
 [all]
-nightwolf.localdomain
-
+192.168.1.149
+192.168.1.166
 [dev-servers]
-nightwolf.localdomain
+192.168.1.149
+192.168.1.166

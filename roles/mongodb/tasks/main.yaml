@@ -1,13 +1,26 @@
 ---
 
-- name: Copy mongodb repository into /etc/yum.repos.d
+- name: Copy mongodb repository into /etc/yum.repos.d for EL7-EL8
   copy:
-    src: mongodb-org-4.0.repo
-    dest: /etc/yum.repos.d/mongodb-org-4.0.repo
+    src: mongodb-org.repo
+    dest: /etc/yum.repos.d/mongodb-org.repo
     owner: root
     group: root
     mode: u=rw,g=r,o=r
+  when: (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "7") or (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
   tags: mongodb
+
+
+- name: Copy mongodb repository into /etc/yum.repos.d for EL9
+  copy:
+    src: mongodb-org-EL9.repo
+    dest: /etc/yum.repos.d/mongodb-org.repo
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  when: (ansible_facts['os_family'] == "RedHat" and ansible_facts['distribution_major_version'] == "9")
+  tags: mongodb
+
 
 
 - name: ensure a list of MongoDB packages installed

@@ -8,16 +8,11 @@
   file: path="{{tomcat_install_path}}/{{tomcat_final}}" state=absent
   tags: tomcat
 
-- name: Remove tomcat package
-  file: path="{{tomcat_install_path}}/{{tomcat_package}}" state=absent
-  tags: tomcat
 
 - name: Remove symlink tomcat directory
   file: path="{{tomcat_dir}}" state=absent
   tags: tomcat
 
-  #- name: Remove tomcat service into init.d directory
-  #file: path=/etc/init.d/tomcat9 state=absent
 
 - name: Remove tomcat service into systemd and reloading daemon
   file: path=/usr/lib/systemd/system/tomcat.service state=absent
@@ -38,10 +33,12 @@
     state: absent
   tags: tomcat
 
-- name: Remove port 8080/tcp for Tomcat
+
+- name: Removing port 8080/tcp for Tomcat
   firewalld:
     port: 8080/tcp
     permanent: true
     immediate: true
     state: disabled
+  notify: Reloading firewalld rules
   tags: tomcat

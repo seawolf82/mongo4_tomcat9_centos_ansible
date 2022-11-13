@@ -3,5 +3,6 @@
   remote_user: root
   roles:
     - mongodb_uninstall
+    - disable-thp_uninstall
     - tomcat_uninstall
 
